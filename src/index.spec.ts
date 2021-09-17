@@ -1,10 +1,10 @@
-import { Decay, DecayType } from "./index";
+import { Decay, DecayType } from './index';
 
 export async function wait(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-describe("Decay", () => {
+describe('Decay', () => {
   it(`should initialize with empty config`, () => {
     const decay = new Decay();
     expect(decay).toBeInstanceOf(Decay);
@@ -48,7 +48,7 @@ describe("Decay", () => {
   it(`should emit on min`, async () => {
     const decay = new Decay({ interval: 10 });
     let triggerValue;
-    decay.on("min", (v) => (triggerValue = v));
+    decay.on('min', (v) => (triggerValue = v));
     decay.start();
     await decay.wait();
     decay.stop();
@@ -58,7 +58,7 @@ describe("Decay", () => {
   it(`should emit on max`, async () => {
     const decay = new Decay({ interval: 10, maxValue: 10 });
     let triggerValue;
-    decay.on("max", (v) => (triggerValue = v));
+    decay.on('max', (v) => (triggerValue = v));
     decay.start();
     decay.increment(1000);
     await decay.wait();
@@ -69,7 +69,7 @@ describe("Decay", () => {
   it(`should emit on stop`, async () => {
     const decay = new Decay();
     let triggerValue;
-    decay.on("stop", (v) => (triggerValue = v));
+    decay.on('stop', (v) => (triggerValue = v));
     decay.start();
     decay.stop();
     await wait(10);
@@ -77,8 +77,12 @@ describe("Decay", () => {
   });
 
   it(`should decay exponentially`, async () => {
-    const decay = new Decay({ interval: 10, decayValue: 0.1, type: DecayType.Exponential });
-    let t0 = Date.now();
+    const decay = new Decay({
+      interval: 10,
+      decayValue: 0.1,
+      type: DecayType.Exponential,
+    });
+    const t0 = Date.now();
     decay.start();
     await decay.wait();
     decay.stop();

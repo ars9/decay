@@ -1,4 +1,4 @@
-import EventEmitter from "node:events";
+import EventEmitter from 'node:events';
 
 export enum DecayType {
   /** Value decays linearly */
@@ -75,7 +75,7 @@ export class Decay extends EventEmitter {
 
   start(): void {
     this.timer = setInterval(() => this.tick(), this.interval);
-    this.emit("start", this.value);
+    this.emit('start', this.value);
   }
 
   stop(): number {
@@ -83,7 +83,7 @@ export class Decay extends EventEmitter {
     if (this.timer) {
       clearInterval(this.timer);
     }
-    this.emit("stop", this.value);
+    this.emit('stop', this.value);
     return this.value;
   }
 
@@ -93,14 +93,14 @@ export class Decay extends EventEmitter {
         reject();
       }
       const resolver = (v: number) => {
-        this.removeListener("min", resolver);
-        this.removeListener("max", resolver);
-        this.removeListener("stop", resolver);
+        this.removeListener('min', resolver);
+        this.removeListener('max', resolver);
+        this.removeListener('stop', resolver);
         resolve(v);
       };
-      this.once("min", resolver);
-      this.once("max", resolver);
-      this.once("stop", resolver);
+      this.once('min', resolver);
+      this.once('max', resolver);
+      this.once('stop', resolver);
     });
   }
 
@@ -116,12 +116,12 @@ export class Decay extends EventEmitter {
   private enforceMinMax() {
     if (this.value > this.maxValue) {
       this.value = this.maxValue;
-      this.emit("max", this.value);
+      this.emit('max', this.value);
       this.iter = 0;
     }
     if (this.value < this.minValue) {
       this.value = this.minValue;
-      this.emit("min", this.value);
+      this.emit('min', this.value);
       this.iter = 0;
     }
   }
